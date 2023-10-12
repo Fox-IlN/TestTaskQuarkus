@@ -1,0 +1,102 @@
+---
+openapi: 3.0.3
+info:
+  title: TQuarkus API
+  version: 1.0.0
+paths:
+  /user:
+    get:
+      tags:
+      - User Controller
+      summary: Получить всех user
+      responses:
+        "200":
+          description: OK
+  /user/create:
+    post:
+      tags:
+      - User Controller
+      summary: Добавить нового user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: OK
+  /user/delete/{id}:
+    delete:
+      tags:
+      - User Controller
+      summary: Удалить user с соответствующим id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+  /user/update/{id}:
+    post:
+      tags:
+      - User Controller
+      summary: Обновить пользователя с соответствующим id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: OK
+  /user/{id}:
+    get:
+      tags:
+      - User Controller
+      summary: Найти user по id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    User:
+      required:
+      - name
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          pattern: "^[a-zA-Z]+$"
+          type: string
+        email:
+          type: string
+        password:
+          maxLength: 16
+          minLength: 8
+          pattern: "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$"
+          type: string
+  securitySchemes:
+    SecurityScheme:
+      type: http
+      description: Authentication
+      scheme: basic
